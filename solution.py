@@ -57,5 +57,8 @@ class MDPSolution:
     def __ge__(self, other):
         return self.get_fitness() >= other.get_fitness()
 
-    def __neg__(self):
-        return MDPSolution(self._instance).set_fitness(-self._fitness)
+    def __add__(self, other):
+        return self.get_fitness() + other.get_fitness()
+
+    def __radd__(self, other):
+        return self.get_fitness() + other

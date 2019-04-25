@@ -1,6 +1,7 @@
 from solGenerator import MDPSolGenerator
 from solution import MDPSolution
 from selector import *
+from replacement import *
 from copy import deepcopy
 import numpy as np
 
@@ -9,15 +10,16 @@ class MDPGeneticAlgorithm:
     """
     Doc
     """
-    def __init__(self, instance, selector=MDPRouletteSelection(), population_size=50, generations=50, mutation_prob=0.1, elitism=False):
+    def __init__(self, instance, selector=MDPRouletteSelection(), population_size=50,
+                 generations=50, mutation_prob=0.1, replacement=MDPWholeReplacement()):
 
         # Algorithm attributes
         self._instance = instance
         self._population_size = population_size
         self._generations = generations
         self._mutation_prob = mutation_prob
-        self._elitism = elitism
         self._selector = selector
+        self._replacement = replacement
 
         # Algorithm data
         self._population = None
@@ -26,6 +28,7 @@ class MDPGeneticAlgorithm:
         # Results structures
         self._best_solutions_until_now = np.ndarray(shape=(self._generations,), dtype=np.object)
         self._best_solutions_generation = np.ndarray(shape=(self._generations,), dtype=np.object)
+        self._mean_solutions_generation = np.ndarray(shape=(self._generations,), dtype=float)
 
     def init_population(self):
         self._population = np.ndarray(shape=(self._population_size,), dtype=np.object)
@@ -37,11 +40,10 @@ class MDPGeneticAlgorithm:
         self.save_best_solution(0)
 
     def save_best_solution(self, generation):
-        # Dictionary - Fitness : Index
-        sol_dict = {self._population[i].get_fitness(): i for i in range(0, self._population_size)}
 
         # Save best solution
-        best_population_solution = self._population[sol_dict[max(sol_dict)]]
+        best_population_solution = max(self._population)
+
         if generation == 0:
             self._best_solutions_until_now[generation] = best_population_solution
         else:
@@ -51,6 +53,9 @@ class MDPGeneticAlgorithm:
                 self._best_solutions_until_now[generation] = self._best_solutions_until_now[generation-1]
 
         self._best_solutions_generation[generation] = best_population_solution
+
+        # Mean generation solution
+        self._mean_solutions_generation[generation] = np.mean(self._population)
 
     def roulette_selector(self):
         fitness_array = [self._population[i].get_fitness() for i in range(0, self._population_size)]
@@ -136,15 +141,8 @@ class MDPGeneticAlgorithm:
             for j in range(0, len(new_population)):
                 new_population[j] = self.mutate(new_population[j])
 
-            # Population replacement
-            # Elitism?
-            if self._elitism:
-                whole_population = np.concatenate((self._population, new_population))
-
-                # Remplace
-                new_population = np.sort(whole_population)[-50:]
-
-            self._population = new_population
+            # 5 - Population replacement
+            self._population = self._replacement.run_replacement(self._population, new_population)
 
             # Save best results
             self.save_best_solution(i)
@@ -152,4 +150,4 @@ class MDPGeneticAlgorithm:
             print(i)
 
         # Return fitness evolution
-        return self._best_solutions_until_now, self._best_solutions_generation
+        return self._best_solutions_until_now, self._best_solutions_generation, self._mean_solutions_generation
