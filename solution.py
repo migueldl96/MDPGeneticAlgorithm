@@ -40,3 +40,22 @@ class MDPSolution:
 
     def get_solution(self):
         return self._solution
+
+    # Operators overload
+    def __eq__(self, other):
+        return self.get_fitness() == other.get_fitness()
+
+    def __lt__(self, other):
+        return self.get_fitness() < other.get_fitness()
+
+    def __gt__(self, other):
+        return self.get_fitness() > other.get_fitness()
+
+    def __le__(self, other):
+        return self.get_fitness() <= other.get_fitness()
+
+    def __ge__(self, other):
+        return self.get_fitness() >= other.get_fitness()
+
+    def __neg__(self):
+        return MDPSolution(self._instance).set_fitness(-self._fitness)
