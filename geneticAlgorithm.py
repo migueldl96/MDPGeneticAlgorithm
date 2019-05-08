@@ -11,12 +11,12 @@ class MDPGeneticAlgorithm:
     Doc
     """
     def __init__(self, instance, selector=MDPRouletteSelection(), population_size=50,
-                 generations=50, mutation_prob=0.1, replacement=MDPWholeReplacement()):
+                 n_generations=50, mutation_prob=0.1, replacement=MDPWholeReplacement()):
 
         # Algorithm attributes
         self._instance = instance
         self._population_size = population_size
-        self._generations = generations
+        self._generations = n_generations
         self._mutation_prob = mutation_prob
         self._selector = selector
         self._replacement = replacement
@@ -57,21 +57,11 @@ class MDPGeneticAlgorithm:
         # Mean generation solution
         self._mean_solutions_generation[generation] = np.mean(self._population)
 
-    def roulette_selector(self):
-        fitness_array = [self._population[i].get_fitness() for i in range(0, self._population_size)]
-        max_value = sum(fitness_array)
-        current_value = 0
-        limit = np.random.uniform(0, max_value)
-        for individual in self._population:
-            current_value = current_value + individual.get_fitness()
-            if current_value > limit:
-                return individual
-
     def selection(self):
         candidates_size = 2*self._population_size
         canditates = np.ndarray(shape=(candidates_size,), dtype=np.object)
 
-        # Roulette selection
+        # Selection
         for i in range(0, candidates_size):
             canditates[i] = self._selector.run_selection(self._population)
 
@@ -147,7 +137,7 @@ class MDPGeneticAlgorithm:
             # Save best results
             self.save_best_solution(i)
 
-            print(i)
+            print("Generation " + str(i) + " completed!")
 
         # Return fitness evolution
         return self._best_solutions_until_now, self._best_solutions_generation, self._mean_solutions_generation

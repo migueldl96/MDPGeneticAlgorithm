@@ -29,7 +29,7 @@ class MDPTournamentSelection(MDPSelector):
     Doc
     """
     def __init__(self, size=3, p=0.3):
-        self._size = 5
+        self._size = size
         self._p = p
 
     def run_selection(self, population):
