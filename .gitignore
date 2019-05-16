@@ -1,12 +1,6 @@
 .idea
 *.pyc
 Tablas_MDP_2018-19.xls
-instances/GKD-c_10_n500_m50.txt
-instances/GKD-c_2_n500_m50.txt
-instances/GKD-c_3_n500_m50.txt
-instances/GKD-c_4_n500_m50.txt
-instances/GKD-c_5_n500_m50.txt
-instances/GKD-c_6_n500_m50.txt
 instances/GKD-c_7_n500_m50.txt
 instances/GKD-c_8_n500_m50.txt
 instances/GKD-c_9_n500_m50.txt
