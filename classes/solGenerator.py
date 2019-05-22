@@ -1,4 +1,4 @@
-from solution import MDPSolution
+from classes.solution import MDPSolution
 import numpy as np
 
 class MDPSolGenerator:

@@ -1,9 +1,10 @@
-from geneticAlgorithm import MDPGeneticAlgorithm
-from instance import MDPInstance
-from selector import *
-from replacement import *
+from classes.geneticAlgorithm import MDPGeneticAlgorithm
+from classes.instance import MDPInstance
+from classes.selector import *
+from classes.replacement import *
 import matplotlib.pyplot as plt
 import os
+
 
 def save_results(sel_name, rep_name, n_gen, mut_p, ins_name, best, generation, mean):
 
@@ -44,7 +45,7 @@ def save_results(sel_name, rep_name, n_gen, mut_p, ins_name, best, generation, m
 
 if __name__ == '__main__':
     # Parameters
-    n_generations = 700
+    n_generations = 500
     pop_size = 50
     mutation_p = 0.05
     selector = MDPRouletteSelection()

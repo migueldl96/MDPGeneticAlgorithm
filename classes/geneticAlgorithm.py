@@ -1,7 +1,7 @@
-from solGenerator import MDPSolGenerator
-from solution import MDPSolution
-from selector import *
-from replacement import *
+from classes.solGenerator import MDPSolGenerator
+from classes.solution import MDPSolution
+from classes.selector import *
+from classes.replacement import *
 from copy import deepcopy
 import numpy as np
 

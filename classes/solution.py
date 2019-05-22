@@ -1,4 +1,4 @@
-from evaluator import MDPEvaluator
+from classes.evaluator import MDPEvaluator
 import numpy as np
 
 
